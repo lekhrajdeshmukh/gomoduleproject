@@ -3,6 +3,7 @@ package toolkit
 import (
 	"crypto/rand"
 	"math/big"
+	"os"
 )
 
 const randomStringSource = "abcdesfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
@@ -42,4 +43,17 @@ func (t *Tools) RandomStringUsingRandInt(n int) string {
 	}
 
 	return string(s)
+}
+
+// CreateDirIfNotExists creates a directory, and all necessary parents, if not exists
+func (t *Tools) CreateDirIfNotExist(name string) error {
+	const mode = 0755
+
+	if _, err := os.Stat(name); os.IsNotExist(err) {
+		err = os.MkdirAll(name, mode)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
