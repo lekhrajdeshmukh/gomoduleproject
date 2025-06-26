@@ -7,6 +7,7 @@ The included tools are:
 - [X] Get a random string of a length
 - [X] Upload a file to a specified directory
 - [X] Create directory if it does not exsit 
+- [X] Download a static file 
 
 ## Installation
 
