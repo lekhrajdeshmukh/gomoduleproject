@@ -172,7 +172,7 @@ func TestTools_UploadOneFile(t *testing.T) {
 func TestTools_CreateDirIfNotExists(t *testing.T) {
 	var testtools Tools
 
-	dirName := "./testdata1/dir1"
+	dirName := "./testdir/dir1"
 
 	err := testtools.CreateDirIfNotExist(dirName)
 	if err != nil {
@@ -188,4 +188,31 @@ func TestTools_CreateDirIfNotExists(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+var slugTest = []struct {
+	name          string
+	s             string
+	expected      string
+	errorExpected bool
+}{
+	{name: "valid string", s: "now is the time", expected: "now-is-the-time", errorExpected: false},
+	{name: "empty string", s: "", expected: "", errorExpected: true},
+	{name: "complext string", s: "Now is the time for all GOOD men! + fish & such &^123", expected: "now-is-the-time-for-all-good-men-fish-such-123", errorExpected: false},
+}
+
+func TestTool_SlugifyText(t *testing.T) {
+	var testTool Tools
+
+	for _, e := range slugTest {
+		result, err := testTool.Slugify(e.s)
+		if err != nil && !e.errorExpected {
+			t.Errorf("%s: error received when none expected: %s", e.name, err.Error())
+		}
+
+		if !e.errorExpected && result != e.expected {
+			t.Errorf("%s: wrong slug returned; expeted %s but got %s", e.name, e.expected, result)
+		}
+	}
+
 }
